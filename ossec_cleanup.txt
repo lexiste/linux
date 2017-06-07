@@ -1,0 +1,28 @@
+#!/bin/bash
+DELETE2TIME=`/bin/date -d "32 days ago" "+%Y-%m-%d %H:%M:%S"`
+
+GetValueFromOSSEC()
+{
+   /bin/grep "<$1>" /var/ossec/etc/ossec.conf | /bin/sed "s|^.*<$1>\(.*\)</$1>|\1|g"
+}
+
+MYSQLHOST=`GetValueFromOSSEC "hostname"`
+MYSQLDB=`GetValueFromOSSEC "database"`
+MYSQLUSER=`GetValueFromOSSEC "username"`
+MYSQLPASS=`GetValueFromOSSEC "password"`
+
+echo "
+SET @delete2time=\"$DELETE2TIME\";
+DELETE FROM alert WHERE timestamp < UNIX_TIMESTAMP(@delete2time);
+DELETE FROM data WHERE timestamp < @delete2time;
+" | mysql -h$MYSQLHOST -u$MYSQLUSER -p$MYSQLPASS -D$MYSQLDB
+
+echo "OPTIMIZE TABLE alert;" | mysql -h$MYSQLHOST -u$MYSQLUSER -p$MYSQLPASS -D$MYSQLDB
+echo "OPTIMIZE TABLE data;" | mysql -h$MYSQLHOST -u$MYSQLUSER -p$MYSQLPASS -D$MYSQL
+
+
+create table data_new like data;
+rename table data to data_Oct15, data_new to data;
+
+create table alert_new like alert;
+rename table alert to alert_Oct15, alert_new to alert;
