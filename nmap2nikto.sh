@@ -5,7 +5,7 @@ ports="80 443 8080 8443"
 curdate=$(date +%Y-%d-%m)
 
 ## for a massive, external audit of Radial with multiple /24 and /23 blocks, masscan should be used to generate the 
-##  targets file ... and we have a built configuration file (radial-mass.confi) that includes out net blocks and 
+##  targets file ... and we have a built configuration file (radial-mass.confi) that includes our net blocks and 
 ##  other configuration data.
 ##
 ## something as simple as the following could be used: (just check the radial-mass.conf file for the correct ports defined)
