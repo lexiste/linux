@@ -13,6 +13,7 @@
 
 folder=~/DROP
 droplist="$folder/spamhaus-drop"
+
 NC='\e[0m' #reset
 ALRT='\e[97m\e[41m' #white fg / red bg
 GOOD='\e[92m' #green fg / no bg (default)
@@ -49,7 +50,7 @@ fi
 ##  in a prod world creating a backup, or configuration of other needed (ie. required)
 ##  rules would be in another file to be loaded as well
 ##  (EX: block telnet in/out, whitelist known hosts, etc.)
-echo -e "${GOOD}purging previous iptables rulesi${NC}..."
+echo -e "${GOOD}purging${NC} previous iptables rules..."
 /sbin/iptables -P INPUT ACCEPT
 /sbin/iptables -P FORWARD ACCEPT
 /sbin/iptables -P OUTPUT ACCEPT
@@ -59,7 +60,7 @@ echo -e "${GOOD}purging previous iptables rulesi${NC}..."
 /sbin/iptables -X
 
 ## looks like we have the input file and iptables located
-echo -e "${GOOD}loading $droplist into iptables${NC}..."
+echo -e "${GOOD}loading${NC} $droplist into iptables..."
 cat "$droplist" \
  | sed -e 's/;.*//' \
  | grep -v '^ *$' \
