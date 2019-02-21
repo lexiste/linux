@@ -1,0 +1,8 @@
+# could place in crontab every minute to constantly erase logs!
+function clearlogs {
+  find /var/log -type f
+}
+for i in return $(clearlogs);
+  do sudo cat /dev/null > $i;
+  echo "log $i cleared";
+done

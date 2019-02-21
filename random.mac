@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+set -o errexit
+set -o nounset
+_iface=$1
+/sbin/ifconfig "$_iface" down # shutdown interface
+/usr/bin/macchanger -A "$_iface" # randomize a new MAC addr on interface
+/sbin/ifconfig "$_iface" up # bring interface up
+/sbin/dhclient # request new IP address
