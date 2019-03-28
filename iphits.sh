@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 ## display any destinations where the packets (col 1) is > 0
 ## this displays the packets, bytes and destination IP address
