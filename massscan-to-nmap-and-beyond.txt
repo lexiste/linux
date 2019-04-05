@@ -1,0 +1,9 @@
+1. verify radial-mass.conf and run masscan
+┌─[66] 05-Apr 15:28 [root@whitehat]──[~/pentest/logs]
+└─# masscan -c ../radial-mass.conf > mass_web_`date +%d%b%y`.01
+
+2. strip out the ICMP messages and unneeded information creating list of [IP]<space>[PORT]
+┌─[67] 05-Apr 15:28 [root@whitehat]──[~/pentest/logs]
+└─# egrep -iv 'port 0/icmp' mass_web_05Apr19.01 | awk '{print $6,$4}' | awk 'BEGIN{FS="/tcp"} {print $1,$2}' | sort > mass_web_05Apr19.02
+
+3. run something like host-nmap-generic.sh <file> to perform nmap scan and test each host:port logging results
