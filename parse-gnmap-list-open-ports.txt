@@ -1,0 +1,25 @@
+It is now: Wed 05 Dec 2018 08:09:24 AM EST
+
+[1] 05-Dec 08:09 root on whitehat in ~
+# nmap -Pn -p212,22,990,80,8080,8443 65.118.112.225 -oG ~/tmp/test-file.gnmap
+Starting Nmap 7.70 ( https://nmap.org ) at 2018-12-05 08:10 EST
+Nmap scan report for 65.118.112.225
+Host is up (0.083s latency).
+
+PORT     STATE    SERVICE
+22/tcp   open     ssh
+80/tcp   filtered http
+212/tcp  filtered anet
+990/tcp  filtered ftps
+8080/tcp filtered http-proxy
+8443/tcp filtered https-alt
+
+Nmap done: 1 IP address (1 host up) scanned in 2.18 seconds
+[2] 05-Dec 08:10 root on whitehat in ~
+# grep \/open\/ ~/tmp/test-file.gnmap > test-file.open
+[3] 05-Dec 08:10 root on whitehat in ~
+# perl -lne '/Host:\s*([\d.]+)/; $h=$1; print "$h $_" for (/(\d+)\/open[^\s]/g);' ~/tmp/test-file.open 
+65.118.112.225 22
+[4] 05-Dec 08:11 root on whitehat in ~
+# 
+

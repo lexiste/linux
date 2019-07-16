@@ -1,0 +1,62 @@
+┌─[1] 28-Feb 08:10 [root@whitehat]──[~]
+└─# parted /dev/sda p
+Model: VMware, VMware Virtual S (scsi)
+Disk /dev/sda: 107GB
+Sector size (logical/physical): 512B/512B
+Partition Table: msdos
+Disk Flags: 
+
+Number  Start   End    Size   Type      File system  Flags
+ 1      1049kB  256MB  255MB  primary   ext2         boot
+ 2      257MB   107GB  107GB  extended
+ 5      257MB   107GB  107GB  logical                lvm
+
+┌─[2] 28-Feb 08:11 [root@whitehat]──[~]
+└─# df -hv
+Filesystem                     Size  Used Avail Use% Mounted on
+udev                           2.9G     0  2.9G   0% /dev
+tmpfs                          595M  8.6M  586M   2% /run
+/dev/mapper/whitehat--vg-root   28G   23G  3.2G  88% /
+tmpfs                          3.0G     0  3.0G   0% /dev/shm
+tmpfs                          5.0M     0  5.0M   0% /run/lock
+tmpfs                          3.0G     0  3.0G   0% /sys/fs/cgroup
+/dev/sda1                      236M   58M  166M  26% /boot
+/dev/mapper/whitehat--vg-home   67G  238M   63G   1% /home
+vmhgfs-fuse                    298G  247G   51G  83% /mnt/hgfs
+tmpfs                          595M   20K  595M   1% /run/user/0
+
+┌─[12] 28-Feb 08:18 [root@whitehat]──[~]
+└─# lvresize --verbose --resizefs --size -30g /dev/mapper/whitehat--vg-home 
+[...]
+
+┌─[13] 28-Feb 08:20 [root@whitehat]──[~]
+└─# df -hv
+Filesystem                     Size  Used Avail Use% Mounted on
+udev                           2.9G     0  2.9G   0% /dev
+tmpfs                          595M  8.6M  586M   2% /run
+/dev/mapper/whitehat--vg-root   28G   23G  3.2G  88% /
+tmpfs                          3.0G     0  3.0G   0% /dev/shm
+tmpfs                          5.0M     0  5.0M   0% /run/lock
+tmpfs                          3.0G     0  3.0G   0% /sys/fs/cgroup
+/dev/sda1                      236M   58M  166M  26% /boot
+vmhgfs-fuse                    298G  229G   69G  77% /mnt/hgfs
+tmpfs                          595M   20K  595M   1% /run/user/0
+/dev/mapper/whitehat--vg-home   37G  234M   35G   1% /home
+
+┌─[15] 28-Feb 08:22 [root@whitehat]──[~]
+└─# lvextend --verbose --resizefs --size +30g /dev/mapper/whitehat--vg-root 
+[...]
+
+┌─[16] 28-Feb 08:23 [root@whitehat]──[~]
+└─# df -hv
+Filesystem                     Size  Used Avail Use% Mounted on
+udev                           2.9G     0  2.9G   0% /dev
+tmpfs                          595M  8.6M  586M   2% /run
+/dev/mapper/whitehat--vg-root   57G   23G   32G  43% /
+tmpfs                          3.0G     0  3.0G   0% /dev/shm
+tmpfs                          5.0M     0  5.0M   0% /run/lock
+tmpfs                          3.0G     0  3.0G   0% /sys/fs/cgroup
+/dev/sda1                      236M   58M  166M  26% /boot
+vmhgfs-fuse                    298G  229G   69G  77% /mnt/hgfs
+tmpfs                          595M   20K  595M   1% /run/user/0
+/dev/mapper/whitehat--vg-home   37G  234M   35G   1% /home
