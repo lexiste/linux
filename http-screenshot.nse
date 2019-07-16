@@ -36,7 +36,7 @@ action = function(host, port)
 	local prefix = "http"
 
 	-- screenshot file name template
-	local fname = "cutycapt-nmap-" .. host.ip .. "-" .. port.number .. ".png"
+	local fname = "screenshot-nmap-" .. host.ip .. "-" .. port.number .. ".png"
 
 	-- if port is flagged as secure, change the prefix to https://
 	if ssl == "ssl" then
@@ -44,7 +44,6 @@ action = function(host, port)
 	end
 
 	-- execute the command to cutycapt passing our params
-	-- this requires graphic libraries, wkhtmlto can perform without graphics but having problems getting a stable version running
 	local cmd = "/usr/bin/cutycapt --insecure --url=" .. prefix .. "://" .. host.ip .. ":" .. port.number .. " --out=" .. fname
 
 	local ret = os.execute(cmd)
